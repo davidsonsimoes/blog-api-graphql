@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "node_modules/.bin/nodemon --delay 5 dist/app",
     "gulp": "node_modules/.bin/gulp"
   },
   "keywords": [],
@@ -14,6 +15,7 @@
     "gulp-clean": "0.3.2",
     "gulp-typescript": "3.2.2",
     "typescript": "2.5.3",
-    "@types/node": "8.0.34"
+    "@types/node": "8.0.34",
+    "nodemon": "1.12.0"
   }
 }
