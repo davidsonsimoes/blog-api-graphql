@@ -32,7 +32,7 @@ const userQueries = `
     user(id: ID!): User
 `;
 
-const userMudations = `
+const userMutations = `
     createUser(input: UserCreateInput!): User
     updateUser(id: ID!, input: UserUpdateInput!): User
     updateUserPassword(id: ID!, input: UserUpdatePasswordInput!): Boolean
@@ -42,5 +42,5 @@ const userMudations = `
 export {
     userTypes,
     userQueries,
-    userMudations
+    userMutations
 }
