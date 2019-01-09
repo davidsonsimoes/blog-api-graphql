@@ -27,9 +27,10 @@ export const userResolvers = {
                 .findAll({
                     limit: first,
                     offset: offset
-                });
+                }).catch(handleError);
         },
         user: (parent, {id}, {db}: {db: DbConnectionInterface}, info: GraphQLResolveInfo) => {
+            id = parseInt(id);
             return db.User
                 .findById(id)
                 .then((user: UserInstance) => {
@@ -37,7 +38,7 @@ export const userResolvers = {
                         throw new Error(`O usuário com o ID ${id} não foi encontrado!`)
                     }
                     return user;
-                });
+                }).catch(handleError);
         }
     },
 
@@ -46,7 +47,7 @@ export const userResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.User
                     .create(input, {transaction: t});
-            });
+            }).catch(handleError);
         },
 
         updateUser: (parent, {id, input}, {db}: {db: DbConnectionInterface}, info: GraphQLResolveInfo) => {
@@ -61,7 +62,7 @@ export const userResolvers = {
                         return user.update(input, {transaction: t});
                     });
 
-            })
+            }).catch(handleError)
         },
         updateUserPassword: (parent, {id, input}, {db}: {db: DbConnectionInterface}, info: GraphQLResolveInfo) => {
             id = parseInt(id);
@@ -76,7 +77,7 @@ export const userResolvers = {
                             .then((user: UserInstance) => !!user);
                     });
 
-            })
+            }).catch(handleError)
         },
         deleteUser: (parent, {id}, {db}: {db: DbConnectionInterface}, info: GraphQLResolveInfo) => {
             id = parseInt(id);
@@ -90,7 +91,7 @@ export const userResolvers = {
                         return user.destroy({transaction: t})
                             .then((user: void | UserInstance) => !!user);
                     });
-            });
+            }).catch(handleError);
         }
     }
 };
