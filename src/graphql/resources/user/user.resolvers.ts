@@ -2,8 +2,25 @@ import { GraphQLResolveInfo } from "graphql";
 import { DbConnectionInterface } from "../../../interfaces/DbConnectionInterface";
 import { UserInstance } from "../../../models/UserModel";
 import { Transaction } from "sequelize";
+import { handleError } from "../../../utils/utils";
+import { RequestedFields } from "../../ast/RequestedFields";
 
 export const userResolvers = {
+
+    User: {
+
+        posts: (user, { first = 10, offset = 0 }, {db, requestedFields}: {db: DbConnectionInterface, requestedFields: RequestedFields}, info: GraphQLResolveInfo) => {
+            return db.Post
+                .findAll({
+                    where: {author: user.get('id')},
+                    limit: first,
+                    offset: offset,
+                    attributes: requestedFields.getFields(info, {keep: ['id'], exclude: ['comments']})
+                }).catch(handleError);
+        }
+
+    },
+    
     Query: {
         users: (parent, {first = 10, offset = 0}, {db}: {db: DbConnectionInterface}, info: GraphQLResolveInfo) => {
             return db.User
